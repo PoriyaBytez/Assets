@@ -1,46 +1,40 @@
-import 'dart:ui';
+import 'package:assets/utils/const_colors.dart';
+import 'package:assets/utils/static_fuction.dart';
 import 'package:flutter/material.dart';
-// String catogary_name = '';
-
 
 TextStyle? commonTextStyle = const TextStyle(fontSize: 14);
+TextStyle? commonHintStyle = const TextStyle(fontSize: 18,color: Colors.grey);
+TextStyle? commonSelectedStyle = const TextStyle(fontSize: 18);
 
-//color
-Color Border_color = const Color(0xffffffff);
-Color TextFiel_Background = const Color(0x0dE65913);
-Color Submit_button = const Color(0xffE65913);
-Color BackGround = const Color(0xffE65913);
-Color Icon_color = const Color(0xffE65913);
+BoxBorder? commonBorder = Border.all(width: 1,color: borderColor);
+BoxBorder? loginPageBorder = Border.all(width: 1,color: loginPageBorderColor);
 
 
-/// get APIs
-String baseUrl = 'https://api.sas.co.na/nac/rest/v1/';
-String categoryUrl = '${baseUrl}category';
-String subCategoryUrl = '${baseUrl}subcategory1';
-String locationUrl = '${baseUrl}location';
-String descriptionUrl = '${baseUrl}depreciation';
-String ownerUrl = '${baseUrl}owner';
+/// filter screen bool variable for select
+List<bool> selectedCategory = List.filled(categoryList.length, false);
+/*List.generate(categoryList.length, (index) => false);*/
+List<bool> selectedLocation = List.filled(locationList.length, false);
+List<bool> selectedOwner = List.filled(ownerList.length, false);
+List<bool> selectedDepreciation = List.filled(depreciationList.length, false);
+
+/// filter screen For store selected item id
+List<Map<String, String>> selectLocationItemId = [];
+List<Map<String, String>> selectOwnerItemId = [];
+List<Map<String, String>> selectDepreciationItemId = [];
+
+/// for asset screen to filter data
+List filterValueCategory = [];
+List filterValueLocation = [];
+List filterValueOwner = [];
+List filterValueDepreciation = [];
 
 
-/// post APIs
-String postAssetsUrl = '${baseUrl}asset';
+List filterAssets = [
+  "Category",
+  "Location",
+  "Owner",
+  "Depreciation",
+];
 
-/*
-        "name": "Test Asset",
-        "description": null,
-        "category": "100117",
-        "subcategory1": "100146",
-        "subcategory2": "100192",
-        "acquired": null,
-        "acquired_amt": null,
-        "location": "100112",
-        "status": null,
-        "depreciation": "100114",
-        "owner": "100105",
-        "hashref": null,
-        "image1": "asset_Images/f0b5fdf2.image1.131950.jpg",
-        "image2": "asset_Images/f0b5fdf2.image2.131950.jpg",
-        "image3": null,
-        "image4": null,
-        "invoice": null
-*/
+
+

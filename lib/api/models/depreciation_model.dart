@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-List<Description> descriptionFromJson(String str) => List<Description>.from(json.decode(str).map((x) => Description.fromJson(x)));
+List<Depreciation> descriptionFromJson(String str) => List<Depreciation>.from(json.decode(str).map((x) => Depreciation.fromJson(x)));
 
-String descriptionToJson(List<Description> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String descriptionToJson(List<Depreciation> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Description {
-  Description({
+class Depreciation {
+  Depreciation({
     required this.id,
     required this.name,
     required this.description,
@@ -27,7 +27,7 @@ class Description {
   String company;
   String deleted;
 
-  factory Description.fromJson(Map<String, dynamic> json) => Description(
+  factory Depreciation.fromJson(Map<String, dynamic> json) => Depreciation(
     id: json["id"],
     name: json["name"],
     description: json["description"],

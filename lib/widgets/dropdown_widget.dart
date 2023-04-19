@@ -1,19 +1,22 @@
+import 'package:assets/utils/variables.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/variables.dart';
+import '../utils/const_colors.dart';
 class DropDownWidget extends StatelessWidget {
   
   DropDownWidget({
       required this.showList,
       required this.selectedItem,
       required this.defaultText,
-      this.onTap
+      this.onTap,
+      this.icon
      });
 
   String selectedItem = '';
   String defaultText = '';
   GestureTapCallback? onTap;
   bool showList;
+  IconData? icon;
   TextEditingController SearchController = TextEditingController();
 
   @override
@@ -24,18 +27,24 @@ class DropDownWidget extends StatelessWidget {
         Container(
             padding: const EdgeInsets.only(left: 16),
             decoration: BoxDecoration(
-                color: TextFiel_Background,
+                color: textFieldBackground,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Border_color, width: 2)),
+                border: commonBorder),
             height: 50,
             child: InkWell(
               onTap:onTap,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(selectedItem=='' ? defaultText : selectedItem,
-                      style: const TextStyle(fontSize: 18)),
-                  Icon(color: Icon_color,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(icon,color: prefixIconColor),
+                  ),
+                  Expanded(
+                    child: selectedItem== '' ? Text(defaultText,style: commonHintStyle,) : Text(selectedItem,style: commonSelectedStyle,)
+
+                  ),
+                  Icon(color: iconColor,
                     showList ? Icons.arrow_drop_down : Icons.arrow_drop_up,
                     size: 34,
                   ),

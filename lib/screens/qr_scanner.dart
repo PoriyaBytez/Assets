@@ -7,15 +7,16 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 
-class QRViewScanner extends StatefulWidget {
-  const QRViewScanner({Key? key}) : super(key: key);
+class QRCodeScanner extends StatefulWidget {
+  const QRCodeScanner({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _QRViewScannerState();
+  State<StatefulWidget> createState() => _QRCodeScannerState();
 }
 
-class _QRViewScannerState extends State<QRViewScanner> {
+class _QRCodeScannerState extends State<QRCodeScanner> {
   String tag='';
+  String selectType='Replace';
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -68,14 +69,13 @@ class _QRViewScannerState extends State<QRViewScanner> {
                 cutOutSize: scanArea),
             onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           )),
-
         ],
       ),
     );
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    print('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('no Permission')),

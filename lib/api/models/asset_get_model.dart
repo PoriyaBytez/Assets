@@ -1,53 +1,64 @@
 // To parse this JSON data, do
 //
-//     final assets = assetsFromJson(jsonString);
+//     final assetsGet = assetsGetFromJson(jsonString);
 
 import 'dart:convert';
 
-Assets assetsFromJson(String str) => Assets.fromJson(json.decode(str));
+AssetsGet assetsGetFromJson(String str) => AssetsGet.fromJson(json.decode(str));
 
-String assetsToJson(Assets data) => json.encode(data.toJson());
+String assetsGetToJson(AssetsGet data) => json.encode(data.toJson());
 
-class Assets {
-  Assets({
-    required this.name,
+class AssetsGet {
+  AssetsGet({
+    required this.id,
+    // required this.scanned,
+    this.tag,
+    this.name,
     this.description,
-    required this.category,
-    required this.subcategory1,
-    required this.subcategory2,
+    this.category,
+    this.subcategory1,
+    this.subcategory2,
     this.acquired,
     this.acquiredAmt,
-    required this.location,
+    this.location,
     this.status,
-    required this.depreciation,
-    required this.owner,
+    this.depreciation,
+    this.owner,
     this.hashref,
-    required this.image1,
-    required this.image2,
+    this.image1,
+    this.image2,
     this.image3,
     this.image4,
     this.invoice,
+    required this.deleted,
   });
 
-  String name;
+  String id;
+  // DateTime scanned;
+  dynamic tag;
+  dynamic name;
   dynamic description;
-  String category;
-  String subcategory1;
-  String subcategory2;
+  dynamic category;
+  dynamic subcategory1;
+  dynamic subcategory2;
   dynamic acquired;
   dynamic acquiredAmt;
-  String location;
+  dynamic location;
   dynamic status;
-  String depreciation;
-  String owner;
+  dynamic depreciation;
+  dynamic owner;
   dynamic hashref;
-  String image1;
-  String image2;
+  dynamic image1;
+  dynamic image2;
   dynamic image3;
   dynamic image4;
   dynamic invoice;
+  String deleted;
 
-  factory Assets.fromJson(Map<String, dynamic> json) => Assets(
+  factory AssetsGet.fromJson(Map<String, dynamic> json) => AssetsGet(
+    id: json["id"],
+    // scanned: DateTime.parse(json["scanned"]),
+    tag: json["tag"],
     name: json["name"],
     description: json["description"],
     category: json["category"],
@@ -65,9 +76,13 @@ class Assets {
     image3: json["image3"],
     image4: json["image4"],
     invoice: json["invoice"],
+    deleted: json["deleted"],
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
+    // "scanned": scanned.toIso8601String(),
+    "tag": tag,
     "name": name,
     "description": description,
     "category": category,
@@ -85,5 +100,6 @@ class Assets {
     "image3": image3,
     "image4": image4,
     "invoice": invoice,
+    "deleted": deleted,
   };
 }
