@@ -14,3 +14,6 @@ String allAssetsUrl = '$baseUrl/asset';
 /// post APIs
 String postAssetsUrl = '$baseUrl/asset';
 String loginUrl = '$baseUrl/auth';
+
+String newCategoryPost = "$baseUrl/category";
+String serviceReminderUrl = "$baseUrl/service";

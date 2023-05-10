@@ -1,5 +1,7 @@
 import 'package:assets/api/models/assets_post_model.dart';
+import 'package:assets/api/models/category_post_modul.dart';
 import 'package:assets/api/models/name_model.dart';
+import 'package:assets/api/models/serviece_post_modul.dart';
 import 'package:assets/api/models/subcategories1_model.dart';
 import 'package:dio/dio.dart';
 import '../models/asset_get_model.dart';
@@ -8,6 +10,7 @@ import '../models/depreciation_model.dart';
 import '../models/description_model.dart';
 import '../models/location_model.dart';
 import '../models/owner_model.dart';
+import '../models/service_get_modul.dart';
 import 'api_path.dart';
 
 
@@ -90,55 +93,23 @@ Future<List<Owner>> getOwner() async {
   }
 }
 
-///post Api
-Future postData({required AssetsPost assets}
-    /*{required String tag,
-    required String name,
-    String? description,
-    int? category,
-    String? subcategory1,
-    String? subcategory2,
-    String? location,
-    String? depreciation,
-    required String owner,
-    String? amount,
-    String? date,
-    List<File>? fileImage}*/) async {
+/// all data get
+Future<List<AssetsGet>> getAllDataFromAssets() async {
+  final response = await dio.get(allAssetsUrl);
+  if (response.statusCode == 200) {
+    return (response.data as List).map((e) => AssetsGet.fromJson(e)).toList();
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
+
+// ================================================== post Api ===================================================
+
+/// New asset post
+Future postData({required AssetsPost assets}) async {
 
   final data = FormData.fromMap(
     assets.toJson()
-   /*   {
-    "tag": tag.toString(),
-    "name": name.toString(),
-    "description": description?.toString(),
-    "category": category?.toString(),
-    "subcategory1": subcategory1?.toString(),
-    "subcategory2": subcategory2?.toString(),
-    "acquired": null,
-    "acquired_amt": amount?.toString(),
-    "location": location?.toString(),
-    "status": null,
-    "depreciation": depreciation?.toString(),
-    "owner": owner.toString(),
-    "hashref": null,
-    "image1": fileImage!.length > 0
-        ? await MultipartFile.fromFile(fileImage[0].path,
-            filename: 'image3.jpg')
-        : null,
-    "image2": fileImage.length > 1
-        ? await MultipartFile.fromFile(fileImage[1].path,
-            filename: 'image3.jpg')
-        : null,
-    "image3": fileImage.length > 2
-        ? await MultipartFile.fromFile(fileImage[2].path,
-            filename: 'image3.jpg')
-        : null,
-    "image4": fileImage.length > 3
-        ? await MultipartFile.fromFile(fileImage[3].path,
-            filename: 'image4.jpg')
-        : null,
-    "invoice": null,
-  }*/
   );
   print('data post ==> ${data.fields}');
   try {
@@ -146,10 +117,12 @@ Future postData({required AssetsPost assets}
     print("response ==> ${response.statusCode}");
     return true;
   } on DioError catch (e) {
+    print("error ==> $e");
     return false;
   }
 }
 
+/// login data post
 Future loginDetailUpload ({required String email,required String pass}) async {
 
   final data = FormData.fromMap({
@@ -166,12 +139,40 @@ Future loginDetailUpload ({required String email,required String pass}) async {
   }
 }
 
-Future<List<AssetsGet>> getAllDataFromAssets() async {
-  final response = await dio.get(allAssetsUrl);
-  if (response.statusCode == 200) {
-    return (response.data as List).map((e) => AssetsGet.fromJson(e)).toList();
-  } else {
-    throw Exception('Failed to load album');
-  }
+/// New category post
+  Future createNewCategory (CategoryPost dataPost) async {
+
+    final data = FormData.fromMap(
+        dataPost.toJson()
+    );
+    try {
+      final response = await dio.post(loginUrl, data: data);
+      print("response ==> ${response.statusCode}");
+      print("response ==> ${response.data}");
+      return true;
+    } on DioError catch (e) {
+      return false;
+    }
+}
+
+///service data post
+  Future serviceReminderPost(ServiceGet dataPost) async {
+     final data = {
+       "asset": dataPost.asset,
+       "tag": dataPost.tag,
+       "comment_out": dataPost.commentOut,
+       "date_out": dataPost.dateOut
+     };
+
+     try {
+       print("object dataPost ==> ${data}");
+       final response = await dio.post(serviceReminderUrl, data: data);
+       print("response ==> ${response.statusCode}");
+       print("response ==> ${response.data}");
+       return true;
+     } on DioError catch (e) {
+       print("error ==> $e");
+       return false;
+     }
 }
 

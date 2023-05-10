@@ -1,65 +1,35 @@
 import 'package:assets/utils/variables.dart';
+import 'package:assets/widgets/customContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
+// import 'package:sizer/sizer.dart';
 
 import '../utils/const_colors.dart';
+import '../utils/static_function.dart';
 
 class Common {
-  static loginTextField({
-    required String HintText,
-    TextEditingController? controller,
-    IconData? icon,
-    IconData? suffixIcon,
-    bool passText = false,
-    VoidCallback? onPressed
-  }) {
+  static loginTextField(
+      {required String HintText,
+      TextEditingController? controller,
+      IconData? suffixIcon,
+      bool passText = false,
+      VoidCallback? onPressed}) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: Container(
-        height: 70,
-        child: Stack(alignment: Alignment.centerRight, children: [
-          SizedBox(
-              height: 7.h,
-              width: 85.w,
-              child: TextField(
-                obscureText: passText,
-                controller: controller,
-                cursorHeight: 24,
-                style: TextStyle(fontSize: 18),
-                decoration: InputDecoration(
-                    hintText: HintText,
-                    hintStyle:
-                        TextStyle(color: loginPageBorderColor, fontSize: 18),
-                    prefix: const SizedBox(
-                      width: 32,
-                    ),
-                    suffix: IconButton(onPressed: onPressed, icon: Icon(suffixIcon)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(width: 1, color: loginPageBorderColor),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(width: 1, color: loginPageBorderColor),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)))),
-              )),
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                    border: loginPageBorder,
-                    color: Colors.white,
-                    shape: BoxShape.circle),
-                child: Icon(color: loginPageBorderColor, size: 28, icon),
-              )),
-          //CircleAvatar(radius: 35, backgroundColor: Colors.red)
-        ]),
-      ),
+      child: TextField(
+          obscureText: passText,
+          decoration: InputDecoration(
+            labelText: HintText,
+            hintText: HintText,
+            suffix: InkWell(onTap: onPressed, child: Icon(suffixIcon)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: loginPageBorderColor),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: loginPageBorderColor),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
+          )),
     );
   }
 
@@ -67,24 +37,25 @@ class Common {
       {required String HintText,
       TextEditingController? controller,
       ValueChanged<String>? onChanged,
-      IconData? icon}) {
+      Size? size}) {
     return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Container(
-        height: 50,
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      child: CustomContainer(
         decoration: BoxDecoration(
             color: textFieldBackground,
             borderRadius: BorderRadius.circular(10),
             border: commonBorder),
+        labelText: HintText.replaceAll("*", ""),
+        size: size,
+        color: Colors.white,
+        width: size!.width * .95,
         child: TextField(
           style: commonSelectedStyle,
           controller: controller,
           decoration: InputDecoration(
               border: const UnderlineInputBorder(borderSide: BorderSide.none),
-              // contentPadding: const EdgeInsets.only(left: 16),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Icon(icon, color: prefixIconColor),
+              prefix: SizedBox(
+                width: 8,
               ),
               hintText: HintText,
               errorStyle: const TextStyle(fontSize: 10),
@@ -95,31 +66,61 @@ class Common {
     );
   }
 
-  static commonContainer(String text) {
-    return Container(
-      padding: const EdgeInsets.only(left: 16),
-      alignment: Alignment.centerLeft,
-      height: 50,
+  static DailogText_field({
+    required String HintText,
+    TextEditingController? controller,
+    TextInputType? keyboardType,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            color: textFieldBackground,
+            borderRadius: BorderRadius.circular(10),
+            border: commonBorder),
+        child: TextField(
+          keyboardType: keyboardType,
+          style: commonSelectedStyle,
+          controller: controller,
+          decoration: InputDecoration(
+              border: const UnderlineInputBorder(borderSide: BorderSide.none),
+              prefix: const SizedBox(
+                width: 12,
+              ),
+              hintText: HintText,
+              errorStyle: const TextStyle(fontSize: 10),
+              hintStyle: commonHintStyle),
+        ),
+      ),
+    );
+  }
+
+  static commonContainer({String? text, Size? size}) {
+    return CustomContainer(
+      // padding: const EdgeInsets.only(left: 16),
+      // alignment: Alignment.centerLeft,
+      // height: 50,
       decoration: BoxDecoration(
           color: textFieldBackground,
           borderRadius: BorderRadius.circular(10),
           border: commonBorder),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Icon(
-              Icons.tag,
-              color: prefixIconColor,
-            ),
-          ),
-          text == ''
-              ? Text("*Tag", style: commonHintStyle)
-              : Text(
-                  text,
-                  style: commonSelectedStyle,
-                )
-        ],
+      labelText: 'Tag',
+      size: size,
+      color: Colors.white,
+      width: size!.width * .78,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Row(
+          children: [
+            text == ''
+                ? Text("*Tag", style: commonHintStyle)
+                : Text(
+                    text!,
+                    style: commonSelectedStyle,
+                  )
+          ],
+        ),
       ),
     );
   }
@@ -170,4 +171,151 @@ showSnackBar(String message, context) {
     content: Text(message),
     duration: const Duration(seconds: 2),
   ));
+}
+
+commonIconBuild({GestureTapCallback? onTap, IconData? icon, String? label}) {
+  return InkWell(
+      onTap: onTap,
+      child: SizedBox(
+          // height: 10.h,
+          child: Column(children: [
+        Icon(icon, size: 32),
+        Text(
+          label!,
+          style: TextStyle(fontSize: 14),
+        )
+      ])));
+}
+
+commonButtonAssetScreen({
+  GestureTapCallback? onTap,
+  String? imagePath,
+  Color? colorBG,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(right: 8),
+    child: InkWell(
+        onTap: onTap,
+        child: Container(
+          alignment: Alignment.center,
+          height: 30,
+          width: 30,
+          decoration: BoxDecoration(
+              color: colorBG, borderRadius: BorderRadius.circular(4)),
+          child: Image.asset(
+            imagePath!,
+            height: 20,
+            width: 20,
+          ),
+        )),
+  );
+}
+
+commonButtonDetailScreen({
+  GestureTapCallback? onTap,
+  String? imagePath,
+  Color? colorBG,
+  Size? size,
+  String? title,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8),
+    child: InkWell(
+        onTap: onTap,
+        child: Container(
+            height: 40,
+            width: size!.width * .205,
+            decoration: BoxDecoration(
+                color: colorBG, borderRadius: BorderRadius.circular(4)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  imagePath!,
+                  height: 20,
+                  width: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: SizedBox(width: size.width * .14,
+                    child: Text(title!,
+                        overflow: TextOverflow.clip, maxLines: 1),
+                  ),
+                )
+              ],
+            ))),
+  );
+}
+
+bottomSheetTextField({String? labelText}) {
+  return TextField(
+    decoration: InputDecoration(
+        labelText: labelText!,
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: commonBorderColor)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: commonBorderColor)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: commonBorderColor))),
+  );
+}
+
+datePickerContainer({
+  VoidCallback? onPressed,
+  Size? size,
+  String? labelText,
+  String? hintText,
+  String? datePick,
+}) {
+  return CustomContainer(
+    size: size,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: textCommonColor)),
+    labelText: labelText!,
+    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: datePick != ''
+            ? Text(
+                datePick!,
+                style: TextStyle(fontSize: 17, color: textCommonColor),
+              )
+            : Text(
+                hintText!,
+                style: TextStyle(fontSize: 17, color: textCommonColor),
+              ),
+      ),
+      IconButton(
+          onPressed: onPressed,
+          icon: Icon(
+            size: 25,
+            Icons.date_range_outlined,
+            color: textCommonColor,
+          ))
+    ]),
+  );
+}
+
+detailScreenCommonContainer({required String title, required String value}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+        height: 60,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            border: Border.all(color: commonBorderColor),
+            borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("$title :",style: TextStyle(color: textCommonColor)),
+              Text(value,style: TextStyle(fontSize: 16,color: Color(0xff363f5e)),),
+            ],
+          ),
+        )),
+  );
 }

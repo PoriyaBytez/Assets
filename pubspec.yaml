@@ -44,7 +44,8 @@ dependencies:
   path_provider:
   fluttertoast: ^8.2.1
   shared_preferences: ^2.1.0
-  sizer: ^2.0.15
+#  sizer: ^2.0.15
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   flutter_test:

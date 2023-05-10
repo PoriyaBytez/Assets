@@ -1,8 +1,7 @@
-import 'package:assets/screens/home_screen.dart';
+import 'package:assets/screens/assets_edinting.dart';
 import 'package:assets/widgets/Common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../api/servies/api_servies.dart';
 import '../../utils/const_colors.dart';
@@ -23,120 +22,101 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              height: 35.h,
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Container(
+            decoration: BoxDecoration(
+                color: mainBackGroundColor,
+                image: const DecorationImage(
+                    fit: BoxFit.fill, image: AssetImage("asset/logo-top.png"))),
+            height: size.height * .6,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                      child: Container(
-                    width: 100.w,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("asset/top_login.png"))),
-                  )),
-                  Expanded(
-                      flex: 3,
-                      child: CircleAvatar(
-                        radius: 95,
-                        backgroundColor: loginPageBGColor,
-                        child: Image.asset(height: 200, "asset/Asset_Logo.png"),
-                      )),
+                  Container(height: size.height * .3),
+                  Container(decoration: const BoxDecoration(shape: BoxShape.circle),child: Image.asset("asset/logo.png",height: 80,)),
+                  const Spacer(),
+                  const Text("Login",
+                      style: TextStyle(
+                          fontSize: 28,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400)),
+                  const Spacer(),
+                  const Text("Please confirm that asset back \nin location" ,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff8990a1),
+                          fontWeight: FontWeight.w500)),
+                  const Spacer()
                 ],
               ),
             ),
-            Container(
-              height: 55.h,
-              padding: const EdgeInsets.only(top: 20),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fill, image: AssetImage("asset/BG_circle.png")),
-              ),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Welcome back!",
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: loginPageTextColor,
-                            fontWeight: FontWeight.w500)),
-                    const SizedBox(height: 10),
-                    Text("Login to your Account",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: loginPageTextColor,
-                            fontWeight: FontWeight.w400)),
-                    const SizedBox(height: 20),
-                    Common.loginTextField(
-                        icon: Icons.person_outline,
-                        HintText: "Email Address",
-                        controller: emailController),
-                    Common.loginTextField(
+          ),
+          Container(
+            height: size.height * .4,
+            padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Text("Welcome back!",
+                  //     style: TextStyle(
+                  //         fontSize: 28,
+                  //         color: loginPageTextColor,
+                  //         fontWeight: FontWeight.w500)),
+                  // const SizedBox(height: 10),
+                  // Text("Login to your Account",
+                  //     style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: loginPageTextColor,
+                  //         fontWeight: FontWeight.w400)),
+                  // const SizedBox(height: 20),
+                  SizedBox(height: 80,child: Common.loginTextField(
+                      HintText: "Email Address",
+                      controller: emailController),),
+                  SizedBox(height: 80,child: Common.loginTextField(
                       onPressed: () {
                         setState(() {
                           obSecureText = !obSecureText;
                         });
                       },
-                      suffixIcon: obSecureText==true ? Icons.visibility_off : Icons.visibility,
-                        passText: obSecureText,
-                        icon: Icons.lock_outline_rounded,
-                        HintText: "Password",
-                        controller: passwordController),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            value: remember,
-                            onChanged: (value) {
-                              setState(() {
-                                remember = value!;
-                              });
-                            },
-                          ),
-                          Text("Remember me",
-                              style: TextStyle(
-                                  fontSize: 14, color: loginPageTextColor)),
-                          const Spacer(),
-                          Text('Forgot Password?',
-                              style: TextStyle(
-                                  fontSize: 14, color: loginPageTextColor)),
-                        ],
+                      suffixIcon: obSecureText == true
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      passText: obSecureText,
+                      HintText: "Password",
+                      controller: passwordController),),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        validateFormLogin();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: submitButton,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Text('Login',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400)),
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          validateFormLogin();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: submitButton,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Text('Login',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400)),
-                        ),
-                      ),
-                    ),
-                  ]),
-            ),
-          ]),
-        ),
+                  ),
+                ]),
+          ),
+        ]),
       ),
     );
   }
